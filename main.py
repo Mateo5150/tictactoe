@@ -20,33 +20,29 @@ class Board:
             return True
         else:
             return False
-            
+
     def check_tie(self):
         if self.counter == 9:
             return True
-    
-        return False
-
-    def check_board(self, player):
-
-        if self.board[0] == player and self.board[1] == player and self.board[2] == player:
-            return True
-        if self.board[3] == player and self.board[4] == player and self.board[5] == player:
-            return True
-        if self.board[6] == player and self.board[7] == player and self.board[8] == player:
-            return True
-        if self.board[0] == player and self.board[3] == player and self.board[6] == player:
-            return True
-        if self.board[1] == player and self.board[4] == player and self.board[7] == player:
-            return True
-        if self.board[2] == player and self.board[5] == player and self.board[8] == player:
-            return True
-        if self.board[0] == player and self.board[4] == player and self.board[8] == player:
-            return True
-        if self.board[2] == player and self.board[4] == player and self.board[6] == player:
-            return True
 
         return False
+
+    def is_winner(self, player):
+        combos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+            [1, 4, 7], [2, 4, 8], [0, 4, 8], [2, 4, 6]
+        ]
+
+        for combo in combos:
+            result = True
+            for cell_no in combo:
+                if self.board[cell_no] != player:
+                    result = False
+            if result == True:
+                return True
+
+        return False
+
 
 board = Board()
 
@@ -56,9 +52,9 @@ while True:
     x_choice = int(input("\nX) Please choose 1 - 9. > "))
     while board.update_cell(x_choice, "X") == False:
         print(board.update_cell(x_choice, "X"))
-        print ('This cell is already occupied')
+        print('This cell is already occupied')
         x_choice = int(input("\nX) Please choose 1 - 9. > "))
-    if board.check_board("X"):
+    if board.is_winner("X"):
         print("X win")
         break
 
@@ -68,11 +64,11 @@ while True:
 
     board.display_board()
     o_choice = int(input("\nO) Please choose 1 - 9. > "))
- 
-    while board.update_cell(o_choice, "O")== False:
-        print ('This cell is already occupied')
+
+    while board.update_cell(o_choice, "O") == False:
+        print('This cell is already occupied')
         o_choice = int(input("\nO) Please choose 1 - 9. > "))
-    if board.check_board("O"):
+    if board.is_winner("O"):
         print("O win")
         break
 
